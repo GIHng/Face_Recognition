@@ -1,0 +1,6 @@
+data/
+.DS_Store
+utils/GCP_API_key.json
+utils/eval_urls.txt
+runs/
+*/__pycache__
