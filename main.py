@@ -2,7 +2,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from utils.dataset import CustomDataset
-from utils.transform import get_augmented_transforms
+from utils.transform import get_augmented_transforms, default_get_augmented_transforms
 from models.simple_CNN import SimpleCNN
 from training.train import Train
 import os
@@ -11,7 +11,7 @@ from torch.utils.tensorboard import SummaryWriter
 writer = SummaryWriter()
 
 image_size = 96
-batch_size = 100
+batch_size = 200
 learning_rate = 0.0005
 num_classes = 28
 log_dir = 'logs/'
@@ -28,12 +28,14 @@ def main():
     train = Train(writer)
 
     # DataLoader 설정 및 데이터 로딩
-    transform = get_augmented_transforms(image_size)
+    # transform = get_augmented_transforms(image_size)
+    tra_transform = get_augmented_transforms(image_size=image_size)
+    val_transform = default_get_augmented_transforms(image_size)
 
-    train_dataset = CustomDataset(TRAINING_FILE, transform=transform)
+    train_dataset = CustomDataset(TRAINING_FILE, transform=tra_transform)
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 
-    val_dataset = CustomDataset(VALIDATION_FILE, transform=transform)
+    val_dataset = CustomDataset(VALIDATION_FILE, transform=val_transform)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
     # 손실 함수 및 옵티마이저 정의
@@ -41,7 +43,7 @@ def main():
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     # 모델 학습
-    train.train_model(model, train_loader, val_loader, 100, optimizer, criterion)
+    train.train_model(model, train_loader, val_loader, 200, optimizer, criterion)
 
     writer.flush()
 
