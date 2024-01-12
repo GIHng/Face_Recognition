@@ -3,7 +3,7 @@ from torchvision import transforms
 import numpy as np
 
 RAMDOM_ROTATION = 10
-RANDOM_PROB = 0.5
+RANDOM_PROB = 0.8
 
 def add_similar_pattern(image):
 

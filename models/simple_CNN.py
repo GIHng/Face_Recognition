@@ -23,7 +23,7 @@ class SimpleCNN(nn.Module):
         self.fc1 = nn.Linear(64 * 12 * 12, 256)  # MaxPool 3번 적용 후 이미지 크기가 12x12가 됩니다.
 
         # Dropout 추가 
-        self.dropout = nn.Dropout(0.2)
+        self.dropout = nn.Dropout(0.5)
         self.fc2 = nn.Linear(256, num_classes)
         
     def forward(self, x):

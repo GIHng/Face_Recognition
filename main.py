@@ -28,22 +28,22 @@ def main():
     train = Train(writer)
 
     # DataLoader 설정 및 데이터 로딩
-    # transform = get_augmented_transforms(image_size)
-    tra_transform = get_augmented_transforms(image_size=image_size)
-    val_transform = default_get_augmented_transforms(image_size)
+    transform = default_get_augmented_transforms(image_size)
+    # tra_transform = get_augmented_transforms(image_size=image_size)
+    # val_transform = default_get_augmented_transforms(image_size)
 
-    train_dataset = CustomDataset(TRAINING_FILE, transform=tra_transform)
+    train_dataset = CustomDataset(TRAINING_FILE, transform=transform)
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 
-    val_dataset = CustomDataset(VALIDATION_FILE, transform=val_transform)
+    val_dataset = CustomDataset(VALIDATION_FILE, transform=transform)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
     # 손실 함수 및 옵티마이저 정의
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=0.001)
 
     # 모델 학습
-    train.train_model(model, train_loader, val_loader, 200, optimizer, criterion)
+    train.train_model(model, train_loader, val_loader, 100, optimizer, criterion)
 
     writer.flush()
 
